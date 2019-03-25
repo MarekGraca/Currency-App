@@ -214,6 +214,10 @@ function getCurrencyValue(data,currencyCode,tableType){
 // function that fetch data from local storage and print on the web page
 function fetchCurrency(){
   let currencyArr = JSON.parse(localStorage.getItem('currency'));
+  if (currencyArr===null) {
+    currencyArr= [];    
+  } 
+    
   const output = document.getElementById('section_one_output');
 
   if (currencyArr.length===0) {
