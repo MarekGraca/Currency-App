@@ -18,8 +18,6 @@
         <li><a href="#" id="s2">Dodaj walutę</a></li>
         <li><a href="#" id="s3">Przelicz waluty</a></li>
         <li><a href="#" id="s4">Cena złota</a></li>
-        <li><a href="#" >Przelicz waluty</a></li>
-        <li><a href="#">Przelicz kryptowaluty</a></li>
       </ul>
     </div>
   </section>
@@ -37,26 +35,21 @@
 
       <div id="searchSection" class="section">
         <h1>Wprowadź kod waluty</h1>
-        <input type="text" id="currency_name_code"><br>
-        <button type="button" id="searchCurrencyButton">Dodaj</button>
+          <select id="outputCodes"></select>
+          <button type="button" id="searchCurrencyButton">Dodaj</button>
+
         <!-- <button type="button" id="removeLocal">Remove</button> -->
-        <button class="trigger">Wyświetl wszystkie kody!</button>
-          <div class="modal">
-              <div class="modal-content">
-                  <span class="close-button">&times;</span>
-                    <p id="outputCodes"></p>
-              </div>
-          </div>
+
         <p id="outputError"></p>
       </div>
 
       <div id="calculate_section" class="section">
-        <h1>Wprowadź kod pierwszej waluty waluty:</h1>
-        <input type="text" id="currency1"><br>
+        <h1>Wprowadź pierwszą walutę:</h1>
+        <select id="currency1"></select>
         <h1>Wprowadź ilość:</h1>
         <input type="text" id="currency1value"><br>
-        <h1>Wprowadź kod drugiej waluty waluty:</h1>
-        <input type="text" id="currency2"><br>
+        <h1>Wprowadź drugą walutę:</h1>
+        <select id="currency2"></select>
         <button type="button" id="calculateButton">Przelicz</button><br>
         <h1 id="outputCalculatedValue"></h1>
       </div>

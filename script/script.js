@@ -3,9 +3,6 @@ document.getElementById('calculateButton').addEventListener('click',calculateCur
 document.getElementById('date_button').addEventListener('click',showGoldValueDate);
 // document.getElementById('removeLocal').addEventListener('click',removeLocalStorage);
 
-document.querySelector(".trigger").addEventListener("click", toggleModal);
-document.querySelector(".close-button").addEventListener("click", toggleModal);
-window.addEventListener("click", windowOnClick);
 
 
 const section_one = document.getElementById('section_one');
@@ -74,6 +71,8 @@ navigation.addEventListener('click',(e)=>{
   }
 });
 
+
+
 function showGoldValue(){
   const goldOutput = document.getElementById('gold_output');
   fetch('http://api.nbp.pl/api/cenyzlota')
@@ -103,7 +102,8 @@ function removeLocalStorage(){
 }
 
 function saveCurrency(){
-  let currencyCode = document.getElementById('currency_name_code').value.toUpperCase();
+
+  let currencyCode = document.getElementById('outputCodes').value.toUpperCase();
   if (currencyCode!='') {
   fetch('http://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
@@ -127,6 +127,7 @@ function saveCurrency(){
         if (validate!=true&&currencyArrCode.length<10) {
           currencyArr.push(currencyValue1);
           localStorage.setItem('currency',JSON.stringify(currencyArr));
+          fetchCurrency();
         }
         if (validate==true) {
           alert('Waluta już dodana');
@@ -134,8 +135,8 @@ function saveCurrency(){
         if (currencyArr.length>=10) {
           alert('Zbyt dużo dodanych walut');
         }
-        fetchCurrency();
       }
+      fetchCurrency();
     }
     return fetch('http://api.nbp.pl/api/exchangerates/tables/B/');
   })
@@ -161,6 +162,8 @@ function saveCurrency(){
         if (validate!=true&&currencyArrCode.length<10) {
           currencyArr.push(currencyValue1);
           localStorage.setItem('currency',JSON.stringify(currencyArr));
+          fetchCurrency();
+          printElementOnce(doc,el);
         }
         if (validate==true) {
           alert('Waluta już dodana');
@@ -172,7 +175,8 @@ function saveCurrency(){
       }
     }
     }
-  })
+
+})
   .catch(error => console.error(error))
   }
 }
@@ -214,15 +218,15 @@ function getCurrencyValue(data,currencyCode,tableType){
 // function that fetch data from local storage and print on the web page
 function fetchCurrency(){
   let currencyArr = JSON.parse(localStorage.getItem('currency'));
-  if (currencyArr===null) {
-    currencyArr= [];    
-  } 
-    
   const output = document.getElementById('section_one_output');
 
+  if (currencyArr===null){
+    currencyArr = [];
+  }
   if (currencyArr.length===0) {
     output.innerHTML = `<h1> Zapisz swoje ulubione waluty w sekcji <br> <b>dodaj walutę.</b></h1>`
   }
+
   else {
     output.innerHTML = '';
     for (let i = 0; i < currencyArr.length; i++) {
@@ -250,7 +254,6 @@ function calculateCurrency(){
   const currency2 = document.getElementById('currency2').value.toUpperCase();
   const currencyInput = Number(document.getElementById('currency1value').value);
   const outputCalculatedValue = document.getElementById('outputCalculatedValue');
-  console.log(currency1);
 
   let currencyValue1;
   let currencyValue2;
@@ -279,7 +282,7 @@ function calculateCurrency(){
       let temp1 = currencyInput * Number(currencyValue1.value);
       calculated = temp1/Number(currencyValue2.value);
       calculated = calculated.toFixed(3);
-      let outputCalculated = `Za ${currencyInput} ${currencyValue1.code} (${currencyValue1.name}) kupisz ${calculated} ${currencyValue2.code} (${currencyValue2.name})`;
+      let outputCalculated = ` ${currencyInput} ${currencyValue1.code} ${currencyValue1.name} jest warty ${calculated} ${currencyValue2.code} ${currencyValue2.name} <br> według NBP (Narodowy Bank Polski).`;
       printElementOnce(outputCalculatedValue,outputCalculated);
     })
     .then(data => {
@@ -299,24 +302,50 @@ function calculateCurrency(){
 
 
 function showCodes(){
-  let outputCodes = document.getElementById('outputCodes');
+  const outputCodes = document.getElementById('outputCodes');
+  const outputCodes1 = document.getElementById('currency1');
+  const outputCodes2 = document.getElementById('currency2');
   let output = "";
-  outputCodes.style.display = 'block';
+  let currencyArr = [];
+  currencyArr = JSON.parse(localStorage.getItem('currency'));
+  if (currencyArr===null) {
+    currencyArr = [];
+  }
+
   fetch('http://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
   .then(data => {
+    for (let i = 0; i < currencyArr.length; i++) {
+        data[0].rates.map((currency)=>{
+        if (currencyArr[i].code===currency.code) {
+          currencyArr[i].value = currency.mid;
+        }
+      })
+    }
     data[0].rates.map((currency)=>{
-      output += `<span class="span1"> ${currency.currency}</span> <span class='span2'> ${currency.code}</span><br>`;
+      output += `<option value = ${currency.code}> ${currency.currency} </option>`;
     })
     printElement(outputCodes,output);
+    printElement(outputCodes1,output);
+    printElement(outputCodes2,output);
     return fetch('http://api.nbp.pl/api/exchangerates/tables/B/')
   })
     .then(response => response.json())
     .then(data => {
+      for (let i = 0; i < currencyArr.length; i++) {
+          data[0].rates.map((currency)=>{
+          if (currencyArr[i].code===currency.code) {
+            currencyArr[i].value = currency.mid;
+          }
+        })
+      }
       data[0].rates.map((currency)=>{
-        output += `<span class="span1"> ${currency.currency}</span> <span class='span2'> ${currency.code}</span><br>`;
+        output += `<option value = ${currency.code}> ${currency.currency} </option>`;
     });
+      localStorage.setItem('currency',JSON.stringify(currencyArr));
       printElement(outputCodes,output);
+      printElement(outputCodes1,output);
+      printElement(outputCodes2,output);
     })
     .then(data =>{
       output ="";
@@ -332,14 +361,4 @@ function printElement(doc,el){
 // function that takes as a first parameter element on webpage and second parameter is element for printing. Print only once
 function printElementOnce(doc,el){
   doc.innerHTML = el;
-}
-
-function toggleModal() {
-    modal.classList.toggle("show-modal");
-}
-
-function windowOnClick(event) {
-    if (event.target === modal) {
-        toggleModal();
-    }
 }
