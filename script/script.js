@@ -72,7 +72,7 @@ navigation.addEventListener('click',(e)=>{
 });
 
 
-
+// function that prints today gold value on the page
 function showGoldValue(){
   const goldOutput = document.getElementById('gold_output');
   fetch('http://api.nbp.pl/api/cenyzlota')
@@ -83,6 +83,7 @@ function showGoldValue(){
   .catch(error => console.error(error))
 }
 
+// function that provide gold value depends on the data
 function showGoldValueDate(){
   const goldOutput1 = document.getElementById('gold_output1');
   const date = document.getElementById('date').value;
