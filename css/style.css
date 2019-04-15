@@ -203,11 +203,11 @@ button:hover{
 
 @media(max-width: 768px){
   .intro{
-    min-height: 130%;
+    min-height: 500px;
   }
   .intro h1{
     text-align: center;
-    margin:0px;
+    margin-top:20px;
   }
   .intro ul{
     margin: 0px;
@@ -220,6 +220,5 @@ button:hover{
     padding: 0px;
     margin: 0;
     margin-bottom: 10px;
-
   }
 }
