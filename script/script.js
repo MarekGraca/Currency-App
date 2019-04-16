@@ -75,7 +75,7 @@ navigation.addEventListener('click',(e)=>{
 // function that prints today gold value on the page
 function showGoldValue(){
   const goldOutput = document.getElementById('gold_output');
-  fetch('http://api.nbp.pl/api/cenyzlota')
+  fetch('https://api.nbp.pl/api/cenyzlota')
   .then(response => response.json())
   .then(data => {
     printElementOnce(goldOutput, `${data[0].cena} zł`);
