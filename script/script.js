@@ -87,11 +87,10 @@ function showGoldValue(){
 function showGoldValueDate(){
   const goldOutput1 = document.getElementById('gold_output1');
   const date = document.getElementById('date').value;
-  const api = `https://api.nbp.pl/api/cenyzlota/${date}/`
-  console.log(date);
+  const api =`https://api.nbp.pl/api/cenyzlota/${date}/`; 
   fetch(api)
   .then(response => response.json())
-  .then(data => {
+  .then(data => {    
     const output = `<h2>Cena złota w dniu ${data[0].data} wynosiła ${data[0].cena} zł</h2>`;
     printElementOnce(goldOutput1, output);
   })
