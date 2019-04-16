@@ -87,7 +87,7 @@ function showGoldValue(){
 function showGoldValueDate(){
   const goldOutput1 = document.getElementById('gold_output1');
   const date = document.getElementById('date').value;
-  const api = `http://api.nbp.pl/api/cenyzlota/${date}/`
+  const api = `https://api.nbp.pl/api/cenyzlota/${date}/`
   console.log(date);
   fetch(api)
   .then(response => response.json())
