@@ -87,7 +87,7 @@ function showGoldValue(){
 function showGoldValueDate(){
   const goldOutput1 = document.getElementById('gold_output1');
   const date = document.getElementById('date').value;
-  const api = `https://api.nbp.pl/api/cenyzlota/${date}/`
+  const api = `https:://api.nbp.pl/api/cenyzlota/${date}/`
   console.log(date);
   fetch(api)
   .then(response => response.json())
@@ -106,7 +106,7 @@ function saveCurrency(){
 
   let currencyCode = document.getElementById('outputCodes').value.toUpperCase();
   if (currencyCode!='') {
-  fetch('http://api.nbp.pl/api/exchangerates/tables/A/')
+  fetch('https://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
   .then(data => {
     currencyValue1 = getCurrencyValue(data,currencyCode,'A');
@@ -139,7 +139,7 @@ function saveCurrency(){
       }
       fetchCurrency();
     }
-    return fetch('http://api.nbp.pl/api/exchangerates/tables/B/');
+    return fetch('https://api.nbp.pl/api/exchangerates/tables/B/');
   })
   .then(response => response.json())
   .then(data => {
@@ -265,12 +265,12 @@ function calculateCurrency(){
     alert("Wprowadź wartość");
   }
   else {
-  fetch('http://api.nbp.pl/api/exchangerates/tables/A/')
+  fetch('https://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
   .then(data => {
     currencyValue1 =  getCurrencyValue(data,currency1,'A');
     currencyValue2 =  getCurrencyValue(data,currency2,'A');
-    return fetch('http://api.nbp.pl/api/exchangerates/tables/B/')
+    return fetch('https://api.nbp.pl/api/exchangerates/tables/B/')
   })
     .then(response => response.json())
     .then(data => {
@@ -313,7 +313,7 @@ function showCodes(){
     currencyArr = [];
   }
 
-  fetch('http://api.nbp.pl/api/exchangerates/tables/A/')
+  fetch('https://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
   .then(data => {
     for (let i = 0; i < currencyArr.length; i++) {
@@ -329,7 +329,7 @@ function showCodes(){
     printElement(outputCodes,output);
     printElement(outputCodes1,output);
     printElement(outputCodes2,output);
-    return fetch('http://api.nbp.pl/api/exchangerates/tables/B/')
+    return fetch('https://api.nbp.pl/api/exchangerates/tables/B/')
   })
     .then(response => response.json())
     .then(data => {
