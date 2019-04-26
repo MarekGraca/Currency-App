@@ -102,13 +102,13 @@ function removeLocalStorage(){
 }
 
 function saveCurrency(){
-
+  let currencyValue1;
   let currencyCode = document.getElementById('outputCodes').value.toUpperCase();
   if (currencyCode!='') {
   fetch('https://api.nbp.pl/api/exchangerates/tables/A/')
   .then(response => response.json())
   .then(data => {
-    let currencyValue1 = getCurrencyValue(data,currencyCode,'A');
+    currencyValue1 = getCurrencyValue(data,currencyCode,'A');
     if (typeof currencyValue1.name != 'undefined') {
       if (localStorage.getItem('currency')===null) {
         let currencyArr = [];
@@ -142,7 +142,7 @@ function saveCurrency(){
   })
   .then(response => response.json())
   .then(data => {
-    let currencyValue1;
+   
     if (typeof currencyValue1.name==='undefined') {
        currencyValue1 = getCurrencyValue(data,currencyCode,'B');
       if (typeof currencyValue1.name != 'undefined') {
@@ -162,8 +162,7 @@ function saveCurrency(){
         if (validate!=true&&currencyArrCode.length<10) {
           currencyArr.push(currencyValue1);
           localStorage.setItem('currency',JSON.stringify(currencyArr));
-          fetchCurrency();
-          printElementOnce(doc,el);
+          fetchCurrency();          
         }
         if (validate==true) {
           alert('Waluta już dodana');
@@ -231,10 +230,19 @@ function fetchCurrency(){
     output.innerHTML = '';
     for (let i = 0; i < currencyArr.length; i++) {
       output.innerHTML +=        `<div class="outputFetch">${(i+1)}.  ${currencyArr[i].name} (${currencyArr[i].code} ) ${currencyArr[i].value} zł </div>`
-                                +'<div><button type="button" class="small" id="removeLocal" onclick="deleteCurrency(\''+currencyArr[i].name+'\')">Usuń</button></div>'
+                                +`<div><button type="button" class="small delButtons" id="removeLocal" value="${currencyArr[i].name}">Usuń</button></div>`
                                 ;
                               }
   }
+  const outputObject = document.getElementsByClassName('delButtons');
+
+  for(let i = 0; i < outputObject.length; i++) {
+    outputObject[i].addEventListener('click', () =>{
+      deleteCurrency(outputObject[i].value);
+    });
+  }
+
+
 }
 
 function deleteCurrency(name){
